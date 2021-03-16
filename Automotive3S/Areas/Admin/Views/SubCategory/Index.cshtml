@@ -1,0 +1,79 @@
+﻿@model IEnumerable<Automotive3S.Models.SubCategory>
+
+@{ ViewData["Title"] = "SubCategory";
+    Layout = "~/Views/Shared/_AdminLTE.cshtml";
+
+}
+
+<br />
+<br />
+
+<div class="row">
+    <div class="col-6">
+        <h2 class="text-info">Sub Categories</h2>
+    </div>
+    <div class="col-6 text-right">
+        <a asp-action="Upsert" class="btn btn-info"><i class="fas fa-plus"></i>&nbsp; New Sub Category</a>
+    </div>
+</div>
+
+<br />
+<div>
+    <table class="table table-striped border">
+        <tr class="table-info">
+            <th>
+                @Html.DisplayNameFor(m => m.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Category.Name)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(m => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.Category.Name)
+                </td>
+
+                <td>
+                    <div class="text-center">
+                        <a href="/Admin/Category/Upsert/@item.Id" class="btn btn-success text-white"
+                           style="cursor:pointer">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        &nbsp;
+                        <button onclick=Delete("/Admin/Category/Delete/@item.Id")
+                                class="btn btn-danger text-white" style="cursor:pointer">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </td>
+
+            </tr>
+        }
+    </table>
+</div>
+
+@section Scripts{
+
+    <script>
+function Delete(url) {
+            $.ajax({
+                type: 'DELETE',
+                url: url,
+                success: function (data) {
+                    location.reload();
+                }
+            });
+        }</script>
+
+}
+
+
+
+
