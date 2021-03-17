@@ -11,10 +11,10 @@ using System.Threading.Tasks;
 
 namespace Automotive3S.Data.Repository
 {
-    public class AutoPartRepository : IAutoPartRepository
+    public class AutoPartRepository : Repository<AutoPart>, IAutoPartRepository
     {
         public readonly ApplicationDbContext _db;
-        public AutoPartRepository(ApplicationDbContext db)
+        public AutoPartRepository(ApplicationDbContext db) : base(db)
         {
             _db = db;
         }

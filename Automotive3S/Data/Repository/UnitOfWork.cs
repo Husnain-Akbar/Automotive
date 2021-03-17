@@ -1,4 +1,6 @@
 ﻿using Automotive3S.Data;
+using Automotive3S.Data.Repository;
+using Automotive3S.Data.Repository.IRepository;
 using Automotive3S.DataAccess.Repository.IRepository;
 using System;
 using System.Collections.Generic;
@@ -6,7 +8,7 @@ using System.Text;
 
 namespace Automotive3S.DataAccess.Repository
 {
-    public class UnitOfWork:IUnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         private readonly ApplicationDbContext _db;
 
@@ -15,11 +17,14 @@ namespace Automotive3S.DataAccess.Repository
             _db = db;
             Category = new CategoryRepository(_db);
             SubCategory = new SubCategoryRepository(_db);
-
+            ShoppingCart = new ShoppingCartRepository(_db);
+            AutoPart = new AutoPartRepository(_db);
         }
 
         public ICategoryRepository Category { get; private set; }
         public ISubCategoryRepository SubCategory { get; private set; }
+        public IShoppingCartRepository ShoppingCart { get; private set; }
+        public IAutoPartRepository AutoPart { get; private set; }
         public void Save()
         {
             _db.SaveChanges();

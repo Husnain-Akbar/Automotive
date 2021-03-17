@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Automotive3S.Models;
+using Automotive3S.DataAccess.Repository.IRepository;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
+using Automotive3S.Utitlities;
 
 namespace Automotive3S.Areas.Customer.Controllers
 {
@@ -13,15 +17,33 @@ namespace Automotive3S.Areas.Customer.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork)
         {
             _logger = logger;
+            _unitOfWork = unitOfWork;
+
         }
 
         public IActionResult Index()
         {
-            return View();
+            IEnumerable<AutoPart> productList = _unitOfWork.AutoPart.GetAll(includeProperties: "Category,SubCategory");
+
+
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            if (claim != null)
+            {
+                var count = _unitOfWork.ShoppingCart
+                    .GetAll(c => c.ApplicationUserId == claim.Value)
+                    .ToList().Count();
+
+                HttpContext.Session.SetInt32(SD.ssShoppingCart, count);
+            }
+
+
+            return View(productList);
         }
 
         public IActionResult Privacy()

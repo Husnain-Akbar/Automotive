@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Automotive3S.Data.Repository.IRepository
 {
-    public interface IAutoPartRepository 
+    public interface IAutoPartRepository :IRepository<AutoPart>
     {
         Task<int> AddNewPart(AutoPartViewModel model);
         Task<List<AutoPart>> GetAllParts();

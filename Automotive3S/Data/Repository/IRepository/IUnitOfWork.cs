@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Automotive3S.Data.Repository.IRepository;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,6 +9,10 @@ namespace Automotive3S.DataAccess.Repository.IRepository
     {
         ICategoryRepository Category { get; }
         ISubCategoryRepository SubCategory { get; }
+        IShoppingCartRepository ShoppingCart { get; }
+
+        IAutoPartRepository AutoPart { get; }
+
         void Save();
     }
 }
