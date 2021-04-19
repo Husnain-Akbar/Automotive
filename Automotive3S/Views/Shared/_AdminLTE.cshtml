@@ -1,4 +1,7 @@
-﻿@inject SignInManager<IdentityUser> SignInManager
+﻿@using Automotive3S.Utitlities
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@inject SignInManager<ApplicationUser> SignInManager
 
 <!DOCTYPE html>
 
@@ -34,11 +37,9 @@
                     <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="index3.html" class="nav-link">Home</a>
+                    <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="nav-link">Home</a>
                 </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a href="#" class="nav-link">Contact</a>
-                </li>
+                
             </ul>
             <div class="collapse navbar-collapse" id="collapsibleNavbar">
                 <ul class="navbar-nav ml-auto">
@@ -46,7 +47,7 @@
                     @if (SignInManager.IsSignedIn(User))
                     {
                         <li class="nav-item">
-                            <form method="post"  asp-area="Admin" asp-controller="Account" asp-action="Logout">
+                            <form method="post" asp-area="Admin" asp-controller="Account" asp-action="Logout">
                                 <button type="submit" style="width:auto"
                                         class="nav-link btn btn-link py-0">
                                     Logout @User.Identity.Name
@@ -56,8 +57,9 @@
                     }
                     else
                     {
+
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="Admin"  asp-controller="Account" asp-action="Register">
+                            <a class="nav-link" asp-area="Admin" asp-controller="Account" asp-action="Register">
                                 Register
                             </a>
                         </li>
@@ -126,6 +128,8 @@
                                         Register
                                     </a>
                                 </li>
+
+                            </ul>
                             </ul>
                 </nav>
                 <!-- /.sidebar-menu -->

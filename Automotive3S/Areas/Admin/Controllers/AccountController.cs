@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Automotive3S.Models;
 using Automotive3S.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -13,11 +14,11 @@ namespace Automotive3S.Areas.Admin.Controllers
    
     public class AccountController : Controller
     {
-        private readonly UserManager<IdentityUser> userManager;
-        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
 
-        public AccountController(UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+        public AccountController(UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
@@ -35,10 +36,15 @@ namespace Automotive3S.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 // Map data from RegisterViewModel to IdentityUser
-                var user = new IdentityUser
+                var user = new ApplicationUser
                 {
                     UserName = model.Email,
-                    Email = model.Email
+                    Email = model.Email,
+                    Name= model.Name,
+                    PhoneNumber = model.PhoneNumber,
+                    StreetAddress=model.StreetAddress,
+                    State=model.State,
+                    PostalCode =model.PostalCode
                 };
 
                 // Store user data in AspNetUsers database table
@@ -49,7 +55,9 @@ namespace Automotive3S.Areas.Admin.Controllers
                 if (result.Succeeded)
                 {
                     await signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("index", "home");
+                    //return RedirectToAction("index", "home","customer");
+                    return RedirectToAction("index", "home", new { area = "customer" });
+
                 }
 
                 // If there are any errors, add them to the ModelState object
@@ -67,7 +75,7 @@ namespace Automotive3S.Areas.Admin.Controllers
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
-            return RedirectToAction("index", "home");
+            return RedirectToAction("index", "home", new { area = "customer" });
         }
 
         [HttpGet]
@@ -87,7 +95,7 @@ namespace Automotive3S.Areas.Admin.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("index", "home");
+                    return RedirectToAction("index", "home", new { area = "customer" });
                 }
 
                 ModelState.AddModelError(string.Empty, "Invalid Login Attempt");

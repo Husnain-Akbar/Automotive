@@ -13,6 +13,10 @@ namespace Automotive3S.DataAccess.Repository.IRepository
 
         IAutoPartRepository AutoPart { get; }
 
+        IApplicationUserRepository ApplicationUser { get; }
+        ICouponRepository Coupon { get; }
+        IOrderDetailsRepository OrderDetails { get; }
+        IOrderHeaderRepository OrderHeader { get; }
         void Save();
     }
 }

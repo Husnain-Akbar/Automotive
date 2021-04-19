@@ -16,6 +16,7 @@ using Automotive3S.DataAccess.Repository.IRepository;
 using Automotive3S.DataAccess.Repository;
 using Automotive3S.Data.Repository;
 using Automotive3S.Data.Repository.IRepository;
+using Automotive3S.Models;
 
 namespace Automotive3S
 {
@@ -34,13 +35,19 @@ namespace Automotive3S
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IAutoPartRepository,AutoPartRepository>();
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,6 +68,7 @@ namespace Automotive3S
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseSession();
 
             app.UseAuthentication();
             app.UseAuthorization();

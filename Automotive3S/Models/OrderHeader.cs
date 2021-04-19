@@ -21,7 +21,15 @@ namespace Automotive3S.Models
         [Required]
         public DateTime ShippingDate { get; set; }
         [Required]
-        public Double OrderTotal { get; set; }
+        public double OrderTotalOriginal { get; set; }
+
+        [Required]
+        [DisplayFormat(DataFormatString = "{0:C}")]
+        [Display(Name = "Order Total")]
+        public double OrderTotal { get; set; }
+        [Display(Name = "Coupon Code")]
+        public string CouponCode { get; set; }
+        public double CouponCodeDiscount { get; set; }
         public string TrackingNumber { get; set; }
         public string Carrier { get; set; }
         public string OrderStatus { get; set; }
